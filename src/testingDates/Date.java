@@ -58,27 +58,79 @@ public class Date
         }
     }
 
-    public void setDate(String monthString, int day, int year)
-    {
-        if (dateOK(monthString, day, year))
-        {
-            this.month = monthString;
-            this.day = day;
-            this.year = year;
-        }
-        else
-        {
-            System.out.println("Fatal Error in setDate(String,int, int)");
-            System.exit(0);
-        }
+    public Date setDate(String monthString, int day, int year)
+    {int monthNumber = getMonthNumber(month);
+    if (monthNumber == -1) return null; // Invalid month
+
+    int[] daysInMonth = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    if (isLeapYear(year)) {
+        daysInMonth[2] = 29; // Adjust for leap year
     }
+
+    // Validate the day
+    if (day < 1 || day > daysInMonth[monthNumber]) {
+        return null; // Invalid day
+    }
+
+    // Set the valid date
+    this.month = monthString(getMonth());
+    this.day = day;
+    this.year = year;
+    return this;
+}
+
+// Helper method to get numeric month value from name
+private int getMonthNumber(String month) {
+    switch (month.toLowerCase()) {
+        case "january": return 1;
+        case "february": return 2;
+        case "march": return 3;
+        case "april": return 4;
+        case "may": return 5;
+        case "june": return 6;
+        case "july": return 7;
+        case "august": return 8;
+        case "september": return 9;
+        case "october": return 10;
+        case "november": return 11;
+        case "december": return 12;
+        default: return -1; // Invalid month
+    }
+}
+
     
     Date addOneDay(){
-    	   System.out.println("Date.addOneDay() is not yet implemented.");
-		return this;
+    	int[] daysInMonth = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        int monthNumber = getMonth(); 
+
+        if (isLeapYear(year)) {
+            daysInMonth[2] = 29;
+        }
+
+        int newDay = day + 1;
+        int newMonth = monthNumber;
+        int newYear = year;
+        if (newDay > daysInMonth[monthNumber]) {
+            newDay = 1;
+            newMonth++;
+
+            // If the month exceeds 12 (December), reset it to January and increment the year
+            if (newMonth > 12) {
+                newMonth = 1;
+                newYear++;
+            }
+        }
+
+        // Return a new Date object with the updated values
+        return new Date(monthString(newMonth), newDay, newYear);
     	}
 
-    public void setDate(int year)
+    private boolean isLeapYear(int year) {
+		// TODO Auto-generated method stub
+    	return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+	}
+
+	public void setDate(int year)
     {
         setDate(1, 1, year);
     }
