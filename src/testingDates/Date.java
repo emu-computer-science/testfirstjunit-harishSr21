@@ -72,6 +72,11 @@ public class Date
             System.exit(0);
         }
     }
+    
+    Date addOneDay(){
+    	   System.out.println("Date.addOneDay() is not yet implemented.");
+		return this;
+    	}
 
     public void setDate(int year)
     {
